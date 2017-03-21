@@ -1,0 +1,15 @@
+<!--tasks.vtl-->
+<h1>Task list!</h1>
+
+#if ($jobs)
+  <ul>
+    #foreach ($job in $jobs)
+      <li><a href="/jobs/$job.getId()">$job.getTitle()</a></li>
+    #end
+  </ul>
+#else
+  <p>No tasks!</p>
+#end
+
+<a href="/jobs/new">Add New Task</a>
+<!--tasks.vtl-->

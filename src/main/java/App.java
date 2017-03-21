@@ -15,32 +15,36 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    get("tasks/new", (request, response) -> {
+    get("jobs/new", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      model.put("template", "templates/task-form.vtl");
+      model.put("template", "templates/job-form.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    get("/tasks", (request, response) -> {
+    get("/jobs", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      model.put("tasks", Task.all());
-      model.put("template", "templates/tasks.vtl");
+      model.put("jobs", JobOpening.all());
+      model.put("template", "templates/jobs.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post("/tasks", (request,response) -> {
+    post("/jobs", (request,response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
+      String title = request.queryParams("title");
       String description = request.queryParams("description");
-      Task newTask = new Task(description);
+      String contact = request.queryParams("contact");
+      int hour = Integer.parseInt(request.queryParams("hour"));
+      JobOpening jobs = new JobOpening(title,description,contact, (hour+12));
+
       model.put("template", "templates/success.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    get("/tasks/:id", (request, response) -> {
+    get("/jobs/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      Task task = Task.find(Integer.parseInt(request.params(":id")));
-      model.put("task", task);
-      model.put("template", "templates/task.vtl");
+      JobOpening job = JobOpening.find(Integer.parseInt(request.params(":id")));
+      model.put("job", job);
+      model.put("template", "templates/job.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
   }
